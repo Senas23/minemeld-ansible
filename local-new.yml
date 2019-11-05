@@ -3,6 +3,11 @@
   connection: local
   become: true
   tasks:
+    - name: install libleveldb1v5 on Ubuntu 19
+      apt:
+        deb: https://mirrors.edge.kernel.org/ubuntu/pool/main/l/leveldb/libleveldb1v5_1.20-2_amd64.deb
+        when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '19'
+        
     - name: install pre-req packages
       apt:
         pkg:
