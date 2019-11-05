@@ -1,0 +1,54 @@
+- name: minemeld install
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  tasks:
+    - name: Add the MineMeld repo GPG key
+      apt_key:
+        id: E558CE6E39680F318F6CBFACB401E02EDD0DA1F9
+        url: https://minemeld-updates.panw.io/gpg.key
+        state: present
+
+    - name: Add the MineMeld APT repo
+      apt_repository:
+        repo: deb http://minemeld-updates.panw.io/ubuntu xenial-minemeld main
+        state: present
+
+    - name: install pre-req packages
+      apt:
+        pkg:
+        - nginx
+        - redis-server
+        - librrd-dev
+        state: latest
+
+    - name: Create symbolic link for librrd.so
+       file:
+        src: /usr/lib/x86_64-linux-gnu/librrd.so
+        path: /usr/lib/x86_64-linux-gnu/librrd.so.4
+        state: link
+
+    - name: Install MineMeld
+      apt:
+        name: minemeld
+        dpkg_options: 'force-overwrite'
+        state: latest
+      notify: restart minemeld
+
+- name: MineMeld Service
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  become_user: minemeld
+  tasks:
+    - name: restart minemeld services
+      supervisorctl:
+        state: restarted
+        supervisorctl_path: /opt/minemeld/engine/current/bin/supervisorctl
+        config: /opt/minemeld/supervisor/config/supervisord.conf
+        name: "{{ item }}"
+      loop:
+        - minemeld-engine
+        - minemeld-supervisord-listener
+        - minemeld-traced
+        - minemeld-web
