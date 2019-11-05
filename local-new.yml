@@ -19,7 +19,7 @@
 
     - name: Add the MineMeld APT repo
       apt_repository:
-        repo: deb http://minemeld-updates.panw.io/ubuntu xenial-minemeld main
+        repo: deb [arch=amd64] http://minemeld-updates.panw.io/ubuntu xenial-minemeld main
         state: present
 
     - name: Create symbolic link for librrd.so
