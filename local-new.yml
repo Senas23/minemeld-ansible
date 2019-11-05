@@ -25,7 +25,7 @@
 
     - name: Create symbolic link for librrd.so
       file:
-        src: /usr/lib/x86_64-linux-gnu/librrd.so
+        src: librrd.so
         path: /usr/lib/x86_64-linux-gnu/librrd.so.4
         state: link
 
