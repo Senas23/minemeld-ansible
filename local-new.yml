@@ -33,9 +33,13 @@
         name: minemeld
         dpkg_options: 'force-overwrite'
         state: latest
-      notify: restart minemeld
+      notify: stop minemeld
       
   handlers:
+    - name: stop minemeld
+      service:
+        name: minemeld
+        state: stopped
     - name: restart minemeld
       service:
         name: minemeld
