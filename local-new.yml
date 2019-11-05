@@ -6,7 +6,6 @@
     - name: install pre-req packages
       apt:
         pkg:
-        - software-properties-common
         - nginx
         - redis-server
         - librrd-dev
