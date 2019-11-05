@@ -3,6 +3,15 @@
   connection: local
   become: true
   tasks:
+    - name: install pre-req packages
+      apt:
+        pkg:
+        - software-properties-common
+        - nginx
+        - redis-server
+        - librrd-dev
+        state: latest
+
     - name: Add the MineMeld repo GPG key
       apt_key:
         id: E558CE6E39680F318F6CBFACB401E02EDD0DA1F9
@@ -13,14 +22,6 @@
       apt_repository:
         repo: deb http://minemeld-updates.panw.io/ubuntu xenial-minemeld main
         state: present
-
-    - name: install pre-req packages
-      apt:
-        pkg:
-        - nginx
-        - redis-server
-        - librrd-dev
-        state: latest
 
     - name: Create symbolic link for librrd.so
       file:
