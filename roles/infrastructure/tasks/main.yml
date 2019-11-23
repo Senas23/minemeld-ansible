@@ -1,5 +1,6 @@
 # from http://serverfault.com/questions/587727/how-to-unify-package-installation-tasks-in-ansible
-- debug: msg="Loading vars for {{ ansible_distribution }} {{ ansible_distribution_version }}"
+- debug:
+    msg: "Loading vars for {{ ansible_distribution }} {{ ansible_distribution_version }}"
 - include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
@@ -8,23 +9,30 @@
 
 # create minemeld group
 - name: create minemeld group
-  group: name=minemeld state=present
+  group:
+    name: minemeld
+    state: present
 
 # include distribution tasks
 - name: include task based on distribution
-  include_tasks: "roles/infrastructure/tasks/{{infrastructure_include}}.yml"
+  include_tasks: "{{ infrastructure_include }}.yml"
   when: infrastructure_include is defined
 
 # install required services
 - name: install packages
-  package: name={{item}} state=present
-  with_items: "{{infrastructure_packages}}"
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ infrastructure_packages }}"
   when: infrastructure_packages is defined
 
 # start services
-- name: start redis-server
-  service: name="{{redis_server_service}}" state=started enabled=yes
-- name: start collectd
-  service: name="{{collectd_service}}" state=started enabled=yes
-- name: start nginx
-  service: name="{{nginx_service}}" state=started enabled=yes
+- name: start and enable services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - "{{ redis_server_service }}"
+    - "{{ collectd_service }}"
+    - "{{ nginx_service }}"
