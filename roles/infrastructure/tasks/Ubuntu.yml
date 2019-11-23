@@ -1,0 +1,14 @@
+# Install libleveldb1v5 for Ubuntu 19
+- name: install libleveldb1v5
+  apt:
+    deb: https://mirrors.edge.kernel.org/ubuntu/pool/main/l/leveldb/libleveldb1v5_1.20-2_amd64.deb
+    state: present
+  when: ansible_distribution_major_version == '18' or ansible_distribution_major_version == '19'
+
+# Fix librrd.so.4 lib reference
+- name: Create symbolic link for librrd.so
+  file:
+    src: librrd.so
+    path: /usr/lib/x86_64-linux-gnu/librrd.so.4
+    state: link
+  when: ansible_distribution_major_version == '18' or ansible_distribution_major_version == '19'
