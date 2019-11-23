@@ -7,7 +7,7 @@
 
 # include distribution tasks
 - name: include pre-task based on distribution
-  include_tasks: "roles/minemeld/tasks/{{distribution_pre_task}}.yml"
+  include_tasks: "{{ distribution_pre_task }}.yml"
   when: distribution_pre_task is defined
 
 - import_tasks: structure.yml
@@ -17,11 +17,18 @@
 
 # set permissions after install
 - name: minemeld directory permissions
-  file: path="{{main_directory}}" state=directory recurse=yes owner=minemeld group=minemeld mode="{{file_permissions}}"
+  file:
+    path: "{{ main_directory }}"
+    state: directory
+    recurse: yes
+    owner: minemeld
+    group: minemeld
+    mode: "{{ file_permissions }}"
 
 # include distribution tasks
 - name: include post-task based on distribution
-  include_tasks: "roles/minemeld/tasks/{{distribution_post_task}}.yml"
+  include_tasks: "{{ distribution_post_task }}.yml"
   when: distribution_post_task is defined
 
-- debug: msg="Remember to add your user to the minemeld group"
+- debug:
+    msg: "Remember to add your user to the minemeld group"

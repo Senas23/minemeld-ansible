@@ -3,13 +3,8 @@ infrastructure_packages:
   - redis-server
   - collectd-core
   - nginx
-  - gcc
-  - git
-  - python-minimal
-  - python2.7-dev
-  - libffi-dev
-  - libssl-dev
-  - make
+
+infrastructure_include: Ubuntu
 
 # services
 redis_server_service: redis

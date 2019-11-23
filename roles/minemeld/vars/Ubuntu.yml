@@ -3,10 +3,13 @@ structure_packages:
   - p7zip-full
   - git
   - g++
+  - python-pip
   - libleveldb-dev
   - librrd-dev
   - libxslt1-dev
   - libc-ares-dev
   - libsnappy-dev
+  - libffi-dev
+  - libssl-dev
 
 distribution_post_task: Ubuntu-16.04-post
